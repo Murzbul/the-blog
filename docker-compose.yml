@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+
+  php:
+    container_name: blog_php_1
+    build: docker/php
+    ports:
+      - "8082:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      - ./docker/apache:/etc/apache2/sites-enabled:ro
+
+  redis:
+    container_name: blog_redis_1
+    image: redis:alpine
+    ports:
+      - "6380:6379"
+
+  db:
+    container_name: blog_db_1
+    image: postgres:12.1
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: the-blog
+      POSTGRES_DB: the-blog
+      POSTGRES_USER: the-blog
+    volumes:
+      - data:/var/lib/postgresql/data
+
+  mail:
+    container_name: blog_mail_1
+    image: mailhog/mailhog:latest
+    ports:
+      - "8026:8025"
+
+  s3:
+    container_name: blog_s3_1
+    image: minio/minio:latest
+    ports:
+      - "9001:9000"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: 12345678
+    volumes:
+      - s3:/data
+    command: server /data
+
+networks:
+  appnet:
+    driver: "bridge"
+
+volumes:
+  data:
+    driver: "local"
+  s3:
+    driver: "local"
