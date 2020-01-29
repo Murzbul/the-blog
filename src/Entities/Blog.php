@@ -9,7 +9,9 @@ class Blog
     /** @var int */
     private $id;
     /** @var string */
-    private $name;
+    private $title;
+    /** @var string */
+    private $body;
 
     public function __construct(string $name)
     {
@@ -26,8 +28,14 @@ class Blog
         return $this->name;
     }
 
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
     public function update(BlogUpdatePayload $payload)
     {
-        $this->name = $payload->name();
+        $this->title = $payload->title();
+        $this->body = $payload->body();
     }
 }

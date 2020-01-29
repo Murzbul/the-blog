@@ -1,5 +1,5 @@
 {
-    "name": "the-blog",
+    "name": "murzbul/theblog",
     "type": "project",
     "description": "The Blog Laravel.",
     "keywords": [
@@ -29,6 +29,7 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "litvinjuan/ethereum-validator": "0.0.1",
         "predis/predis": "^1.1",
+        "ramsey/uuid": "^3.9",
         "sentry/sentry": "^2.0",
         "sentry/sentry-laravel": "1.4.1",
         "tymon/jwt-auth": "1.0.0-rc.4.1"
