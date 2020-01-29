@@ -1,0 +1,192 @@
+{
+	"info": {
+		"_postman_id": "4198828b-b2e7-4096-afa8-96401076e80b",
+		"name": "TheBlog",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Blog",
+			"item": [
+				{
+					"name": "Create Blog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"BLOG_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Blog 1\"\n}\n"
+						},
+						"url": {
+							"raw": "{{URL}}/api/blogs",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"blogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Blog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has token\"] = _.has(jsonData.data, 'access_token');",
+									"tests[\"Response has email\"] = _.has(jsonData.data, 'email');",
+									"",
+									"pm.globals.set(\"ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Blogs 2 Update\"\n}\n"
+						},
+						"url": {
+							"raw": "{{URL}}/api/blogs/{{BLOG_ID}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								"{{BLOG_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Blog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has token\"] = _.has(jsonData.data, 'access_token');",
+									"tests[\"Response has email\"] = _.has(jsonData.data, 'email');",
+									"",
+									"pm.globals.set(\"ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/blogs?search=",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"blogs"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Blog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has token\"] = _.has(jsonData.data, 'id');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/blogs/{{BLOG_ID}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								"{{BLOG_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+Route::post('/blogs', 'BlogHandler@create')->name('BlogHandler@create');
+Route::put('/blogs/{blogId}', 'BlogHandler@update')->name('BlogHandler@update');
+Route::get('/blogs', 'BlogHandler@list')->name('BlogHandler@list');
+Route::get('/blogs/{blogId}', 'BlogHandler@show')->name('BlogHandler@show');

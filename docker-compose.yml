@@ -6,35 +6,43 @@ services:
     container_name: blog_php_1
     build: docker/php
     ports:
-      - "8082:80"
+     - "8082:80"
     volumes:
-      - .:/var/www/html
-      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
-      - ./docker/apache:/etc/apache2/sites-enabled:ro
+     - .:/var/www/html
+     - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+     - ./docker/apache:/etc/apache2/sites-enabled:ro
+    networks:
+      - blognet
 
   redis:
     container_name: blog_redis_1
     image: redis:alpine
     ports:
       - "6380:6379"
+    networks:
+      - blognet
 
   db:
     container_name: blog_db_1
     image: postgres:12.1
     ports:
-      - "5433:5432"
+     - "5433:5432"
     environment:
       POSTGRES_PASSWORD: the-blog
       POSTGRES_DB: the-blog
       POSTGRES_USER: the-blog
     volumes:
-      - data:/var/lib/postgresql/data
+     - data:/var/lib/postgresql/data
+    networks:
+      - blognet
 
   mail:
     container_name: blog_mail_1
     image: mailhog/mailhog:latest
     ports:
-      - "8026:8025"
+     - "8026:8025"
+    networks:
+      - blognet
 
   s3:
     container_name: blog_s3_1
@@ -47,9 +55,11 @@ services:
     volumes:
       - s3:/data
     command: server /data
+    networks:
+      - blognet
 
 networks:
-  appnet:
+  blognet:
     driver: "bridge"
 
 volumes:

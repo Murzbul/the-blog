@@ -2,11 +2,23 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    const WEB_ROUTE_PREFIX = '/';
+    const API_ROUTE_PREFIX = '/api';
+
+    /**
+     * The path to the "home" route for your application.
+     *
+     * @var string
+     */
+    public const HOME = '/home';
+
     /**
      * This namespace is applied to your controller routes.
      *
@@ -14,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'App\Http\Controllers';
+    protected $namespace = 'App\Http\Api\Handlers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -23,8 +35,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
     }
 
@@ -38,8 +48,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
-
-        //
     }
 
     /**
@@ -51,9 +59,17 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+        $handlers = Finder::create()->files()->in(app_path('Http/*/Handlers'));
+
+        /** @var SplFileInfo $file */
+        foreach ($handlers as $file) {
+            $route = $this->namespace . '\\' . $file->getRelativePath();
+
+            Route::middleware('web')
+                ->prefix(static::WEB_ROUTE_PREFIX)
+                ->namespace($route)
+                ->group(base_path('routes/web.php'));
+        }
     }
 
     /**
@@ -65,9 +81,16 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+        $handlers = Finder::create()->files()->in(app_path('Http/*/Handlers'));
+
+        /** @var SplFileInfo $file */
+        foreach ($handlers as $file) {
+            $route = $this->namespace . '\\' . $file->getRelativePath();
+
+            Route::middleware('api')
+                ->prefix(static::API_ROUTE_PREFIX)
+                ->namespace($route)
+                ->group(base_path('routes/api.php'));
+        }
     }
 }
