@@ -13,8 +13,7 @@ class UnknownException extends HttpException
 
     public function __construct(\Exception $exception)
     {
-        //TODO: Loggin 500 errors and get general message
-        parent::__construct($exception->getMessage());
+        parent::__construct();
         $this->exception = $exception;
     }
 }
