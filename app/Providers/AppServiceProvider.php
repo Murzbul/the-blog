@@ -8,9 +8,12 @@ use App\Infrastructure\Doctrine\Repositories\DoctrineReadRepository;
 use Blog\Repositories\BlogRepository;
 use Blog\Repositories\PersistRepository;
 use Blog\Repositories\ReadRepository;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Support\ServiceProvider;
 use Lib\Criteria\Contracts\Criteria;
 use Lib\Criteria\Contracts\Criteria as ICriteria;
+use Lib\Doctrine\Types\UuidType;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,8 +57,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(EntityManagerInterface $entityManager)
     {
+        if (! Type::hasType(UuidType::UUID)) {
+            Type::addType(UuidType::UUID, UuidType::class);
+        }
     }
 
     private function configureMonologSentryHandler()

@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class BlogCreateRequest implements BlogCreatePayload
 {
-    const NAME = 'name';
+    const TITLE = 'title';
+    const BODY = 'body';
 
     /** @var Request */
     private $request;
@@ -17,15 +18,21 @@ class BlogCreateRequest implements BlogCreatePayload
         $this->request = $request;
     }
 
-    public function name(): string
+    public function title(): string
     {
-        return $this->request->get(self::NAME);
+        return $this->request->get(self::TITLE);
+    }
+
+    public function body(): string
+    {
+        return $this->request->get(self::BODY);
     }
 
     public function validate()
     {
         return $this->request->validate([
-            static::NAME => 'required|max:20',
+            static::TITLE => 'required|max:20',
+            static::BODY => 'required|max:500',
         ]);
     }
 }

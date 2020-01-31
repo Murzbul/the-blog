@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 class BlogUpdateRequest implements BlogUpdatePayload
 {
     const ID = 'blogId';
-    const NAME = 'name';
+    const TITLE = 'title';
+    const BODY = 'body';
 
     /** @var Request */
     private $request;
@@ -25,12 +26,17 @@ class BlogUpdateRequest implements BlogUpdatePayload
         $this->repository = $repository;
     }
 
-    public function name(): string
+    public function title(): string
     {
-        return $this->request->get(self::NAME);
+        return $this->request->get(self::TITLE);
     }
 
-    public function id(): int
+    public function body(): string
+    {
+        return $this->request->get(self::BODY);
+    }
+
+    public function id(): string
     {
         return $this->request->route()->parameter(self::ID);
     }
@@ -45,7 +51,8 @@ class BlogUpdateRequest implements BlogUpdatePayload
     public function validate()
     {
         return $this->request->validate([
-            static::NAME => 'required|max:20',
+            static::TITLE => 'required|max:20',
+            static::BODY => 'required|max:500',
         ]);
     }
 }

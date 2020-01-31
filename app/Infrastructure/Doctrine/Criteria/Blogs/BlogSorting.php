@@ -9,9 +9,9 @@ class BlogSorting implements Sorting
 {
     use SortingTrait;
 
-    public const NAME = 'name';
+    public const TITLE = 'title';
 
     protected $sortingKey = [
-        self::NAME,
+        self::TITLE,
     ];
 }

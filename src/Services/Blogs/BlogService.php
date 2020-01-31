@@ -26,10 +26,10 @@ class BlogService
 
     public function create(BlogCreatePayload $payload): Blog
     {
-        $name = $payload->name();
+        $title = $payload->title();
+        $body = $payload->body();
 
-        $blog = new Blog($name);
-
+        $blog = new Blog($title, $body);
         $this->repository->save($blog);
 
         return $blog;

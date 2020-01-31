@@ -5,6 +5,7 @@ namespace App\Infrastructure\Doctrine\Mappings;
 use Blog\Entities\Blog;
 use LaravelDoctrine\Fluent\EntityMapping;
 use LaravelDoctrine\Fluent\Fluent;
+use Lib\Doctrine\Types\UuidType;
 
 class BlogMapping extends EntityMapping
 {
@@ -15,7 +16,10 @@ class BlogMapping extends EntityMapping
 
     public function map(Fluent $builder)
     {
-        $builder->integer('id')->primary()->autoIncrement();
-        $builder->string('name');
+        $builder->field(UuidType::UUID, 'id')->primary();
+        $builder->string('title');
+        $builder->string('body');
+
+        $builder->timestamps('createdAt', 'updatedAt', 'carbonDateTime');
     }
 }

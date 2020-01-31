@@ -2,30 +2,37 @@
 
 namespace Blog\Entities;
 
+use Blog\Contracts\Timestampable as ITimestapable;
 use Blog\Payloads\Blogs\BlogUpdatePayload;
+use Lib\Traits\Timestampable;
+use Ramsey\Uuid\Uuid;
 
-class Blog
+class Blog implements ITimestapable
 {
-    /** @var int */
+    use Timestampable;
+
+    /** @var Uuid */
     private $id;
     /** @var string */
     private $title;
     /** @var string */
     private $body;
 
-    public function __construct(string $name)
+    public function __construct(string $title, string $body)
     {
-        $this->name = $name;
+        $this->id = Uuid::uuid4();
+        $this->title = $title;
+        $this->body = $body;
     }
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
     public function getBody(): string

@@ -4,5 +4,7 @@ namespace Blog\Payloads\Blogs;
 
 interface BlogCreatePayload
 {
-    public function name(): string;
+    public function title(): string;
+
+    public function body(): string;
 }

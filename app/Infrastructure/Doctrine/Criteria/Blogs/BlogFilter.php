@@ -18,7 +18,7 @@ class BlogFilter implements Filter
     public function getFields(): array
     {
         return [
-            'name',
+            'title',
         ];
     }
 }

@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 class BlogShowRequest implements BlogShowPayload
 {
     const ID = 'blogId';
-    const NAME = 'name';
 
     /** @var Request */
     private $request;
@@ -25,7 +24,7 @@ class BlogShowRequest implements BlogShowPayload
         $this->repository = $repository;
     }
 
-    public function id(): int
+    public function id(): string
     {
         return $this->request->route()->parameter(self::ID);
     }
