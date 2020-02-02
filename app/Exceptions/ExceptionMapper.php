@@ -7,6 +7,7 @@ use App\Exceptions\Validation\ValidationResult;
 use App\Http\Exceptions\AuthException;
 use App\Http\Exceptions\EntityNotFoundException;
 use App\Http\Exceptions\PageNotFoundException;
+use App\Http\Exceptions\TokenException;
 use App\Http\Exceptions\UniqueViolationException;
 use App\Http\Exceptions\UnknownException;
 use App\Http\Exceptions\ValidationBusinessException;
@@ -18,6 +19,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class ExceptionMapper
 {
@@ -34,6 +36,10 @@ class ExceptionMapper
 
         $this->registerConversion(AuthenticationException::class, function (AuthenticationException $exception) {
             return new AuthException($exception->getMessage());
+        });
+
+        $this->registerConversion(TokenInvalidException::class, function (TokenInvalidException $exception) {
+            return new TokenException($exception->getMessage());
         });
 
         /*

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Api\Handlers\Blogs;
+namespace App\Http\Api\Handlers;
 
-use App\Http\Api\Handlers\Handler;
 use App\Http\Api\Requests\Blogs\BlogCreateRequest;
 use App\Http\Api\Requests\Blogs\BlogListRequest;
 use App\Http\Api\Requests\Blogs\BlogShowRequest;

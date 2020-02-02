@@ -3,6 +3,7 @@
 /public/vendor
 /public/storage
 /storage/*.key
+/storage/*
 /vendor
 /proxies
 /.idea

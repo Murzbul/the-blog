@@ -5,8 +5,8 @@
  2. docker-compose up -d
  3. Enter a docker container php `docker exec -it blog_php_1 bash`
  4. Execute this command to install all packages `composer install`
- 5. Execute this command `composer build` 
- 6. `php artisan jwt:secret`. Set the JWTAuth secret key used to sign the tokens
+ 5. Execute this command `composer build`
+ 6. Execute this command `php artisan blog:start`
  
  ## Permissions Problems
  1. Only in a LOCALHOST environment.

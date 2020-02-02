@@ -14,14 +14,14 @@ use Lib\Criteria\Contracts\Criteria;
 class BlogService
 {
     /** @var PersistRepository */
-    private $repository;
+    private $persistRepository;
     /** @var BlogRepository */
-    private $itemRepository;
+    private $repository;
 
-    public function __construct(PersistRepository $repository, BlogRepository $itemRepository)
+    public function __construct(PersistRepository $persistRepository, BlogRepository $repository)
     {
+        $this->persistRepository = $persistRepository;
         $this->repository = $repository;
-        $this->itemRepository = $itemRepository;
     }
 
     public function create(BlogCreatePayload $payload): Blog
@@ -30,7 +30,7 @@ class BlogService
         $body = $payload->body();
 
         $blog = new Blog($title, $body);
-        $this->repository->save($blog);
+        $this->persistRepository->save($blog);
 
         return $blog;
     }
@@ -40,14 +40,14 @@ class BlogService
         $blog = $payload->blog();
 
         $blog->update($payload);
-        $this->repository->save($blog);
+        $this->persistRepository->save($blog);
 
         return $blog;
     }
 
     public function list(Criteria $criteria): Paginator
     {
-        $blogs = $this->itemRepository->search($criteria);
+        $blogs = $this->repository->search($criteria);
 
         return $blogs;
     }

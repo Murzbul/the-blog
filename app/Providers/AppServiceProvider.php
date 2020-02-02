@@ -5,9 +5,13 @@ namespace App\Providers;
 use App\Infrastructure\Doctrine\Repositories\DoctrineBlogRepository;
 use App\Infrastructure\Doctrine\Repositories\DoctrinePersistRepository;
 use App\Infrastructure\Doctrine\Repositories\DoctrineReadRepository;
+use App\Infrastructure\Doctrine\Repositories\DoctrineRoleRepository;
+use App\Infrastructure\Doctrine\Repositories\DoctrineUserRepository;
 use Blog\Repositories\BlogRepository;
 use Blog\Repositories\PersistRepository;
 use Blog\Repositories\ReadRepository;
+use Blog\Repositories\RoleRepository;
+use Blog\Repositories\UserRepository;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Support\ServiceProvider;
@@ -25,8 +29,10 @@ class AppServiceProvider extends ServiceProvider
         PersistRepository::class => DoctrinePersistRepository::class,
 
         // Read Repositories
-        BlogRepository::class => DoctrineBlogRepository::class,
         ReadRepository::class => DoctrineReadRepository::class,
+        BlogRepository::class => DoctrineBlogRepository::class,
+        UserRepository::class => DoctrineUserRepository::class,
+        RoleRepository::class => DoctrineRoleRepository::class,
     ];
 
     /**

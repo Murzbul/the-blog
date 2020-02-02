@@ -41,6 +41,8 @@ class ExceptionHandler extends Handler
 
     public function shouldReport(Exception $exception)
     {
+        dd($exception);
+
         return $exception instanceof UnknownException;
     }
 

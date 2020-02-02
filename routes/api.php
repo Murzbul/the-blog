@@ -17,7 +17,24 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::post('/blogs', 'BlogHandler@create')->name('BlogHandler@create');
-Route::put('/blogs/{blogId}', 'BlogHandler@update')->name('BlogHandler@update');
+Route::post('/login', 'AuthHandler@login')->name('AuthHandler@login');
+Route::post('/signup', 'AuthHandler@signUp')->name('AuthHandler@signUp');
+
 Route::get('/blogs', 'BlogHandler@list')->name('BlogHandler@list');
 Route::get('/blogs/{blogId}', 'BlogHandler@show')->name('BlogHandler@show');
+
+Route::middleware(\App\Http\Kernel::API)->group(function(){
+    Route::post('/blogs', 'BlogHandler@create')->name('BlogHandler@create');
+    Route::put('/blogs/{blogId}', 'BlogHandler@update')->name('BlogHandler@update');
+
+    Route::post('/roles', 'RoleHandler@create')->name('RoleHandler@create');
+    Route::put('/roles/{roleId}', 'RoleHandler@update')->name('RoleHandler@update');
+    Route::get('/roles', 'RoleHandler@list')->name('RoleHandler@list');
+    Route::get('/roles/{roleId}', 'RoleHandler@show')->name('RoleHandler@show');
+
+    Route::get('/logout', 'AuthHandler@logout')->name('AuthHandler@logout');
+    Route::get('/refresh', 'AuthHandler@refresh')->name('AuthHandler@refresh');
+    Route::get('/me', 'AuthHandler@me')->name('AuthHandler@me');
+});
+
+

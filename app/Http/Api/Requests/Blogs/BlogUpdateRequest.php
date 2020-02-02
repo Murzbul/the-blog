@@ -6,6 +6,7 @@ use Blog\Entities\Blog;
 use Blog\Payloads\Blogs\BlogUpdatePayload;
 use Blog\Repositories\BlogRepository;
 use Illuminate\Http\Request;
+use Lib\Validators\UuidValidator;
 
 class BlogUpdateRequest implements BlogUpdatePayload
 {
@@ -19,11 +20,17 @@ class BlogUpdateRequest implements BlogUpdatePayload
     private $repository;
     /** @var Blog */
     private $blog;
+    /** @var UuidValidator */
+    private $uuidValidator;
+    /** @var string */
+    private $id;
 
-    public function __construct(Request $request, BlogRepository $repository)
+    public function __construct(Request $request, BlogRepository $repository, UuidValidator $uuidValidator)
     {
         $this->request = $request;
         $this->repository = $repository;
+        $this->uuidValidator = $uuidValidator;
+        $this->id = $this->request->route()->parameter(self::ID);
     }
 
     public function title(): string
@@ -38,7 +45,7 @@ class BlogUpdateRequest implements BlogUpdatePayload
 
     public function id(): string
     {
-        return $this->request->route()->parameter(self::ID);
+        return $this->id;
     }
 
     public function blog(): Blog
@@ -50,6 +57,8 @@ class BlogUpdateRequest implements BlogUpdatePayload
 
     public function validate()
     {
+        $this->uuidValidator->validate($this->id);
+
         return $this->request->validate([
             static::TITLE => 'required|max:20',
             static::BODY => 'required|max:500',

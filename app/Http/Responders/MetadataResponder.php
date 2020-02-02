@@ -7,6 +7,8 @@ use Flugg\Responder\Http\Responses\SuccessResponseBuilder;
 
 class MetadataResponder extends Responder
 {
+    protected $status = 201;
+
     public function __construct(SuccessResponseBuilder $successResponseBuilder, ErrorResponseBuilder $errorResponseBuilder)
     {
         parent::__construct($successResponseBuilder, $errorResponseBuilder);

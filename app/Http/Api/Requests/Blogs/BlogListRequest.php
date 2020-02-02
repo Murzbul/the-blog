@@ -15,10 +15,10 @@ class BlogListRequest extends Criteria
     public function __construct(Request $request)
     {
         $values = $request->all();
-        $blogFilter = new BlogFilter($values);
-        $blogSorting = new BlogSorting($values);
+        $filter = new BlogFilter($values);
+        $sorting = new BlogSorting($values);
 
-        parent::__construct($request, $blogFilter, $blogSorting);
+        parent::__construct($request, $filter, $sorting);
     }
 
     public function getSortingDefaults(): array
