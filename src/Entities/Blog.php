@@ -17,12 +17,15 @@ class Blog implements ITimestapable
     private $title;
     /** @var string */
     private $body;
+    /** @var string */
+    private $status;
 
     public function __construct(string $title, string $body)
     {
         $this->id = Uuid::uuid4();
         $this->title = $title;
         $this->body = $body;
+        $this->status = true;
     }
 
     public function getId(): string
@@ -44,5 +47,10 @@ class Blog implements ITimestapable
     {
         $this->title = $payload->title();
         $this->body = $payload->body();
+    }
+
+    public function changeStatus(bool $status)
+    {
+        $this->status = $status;
     }
 }

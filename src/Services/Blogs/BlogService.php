@@ -5,6 +5,7 @@ namespace Blog\Services\Blogs;
 use Blog\Entities\Blog;
 use Blog\Payloads\Blogs\BlogCreatePayload;
 use Blog\Payloads\Blogs\BlogShowPayload;
+use Blog\Payloads\Blogs\BlogStatusChangePayload;
 use Blog\Payloads\Blogs\BlogUpdatePayload;
 use Blog\Repositories\BlogRepository;
 use Blog\Repositories\PersistRepository;
@@ -55,6 +56,17 @@ class BlogService
     public function show(BlogShowPayload $payload): Blog
     {
         $blog = $payload->blog();
+
+        return $blog;
+    }
+
+    public function statusChange(BlogStatusChangePayload $payload): Blog
+    {
+        $blog = $payload->blog();
+
+        $blog->changeStatus(false);
+
+        $this->persistRepository->save($blog);
 
         return $blog;
     }

@@ -19,6 +19,7 @@ class BlogMapping extends EntityMapping
         $builder->field(UuidType::UUID, 'id')->primary();
         $builder->string('title');
         $builder->string('body');
+        $builder->boolean('status')->default(true);
 
         $builder->timestamps('createdAt', 'updatedAt', 'carbonDateTime');
     }

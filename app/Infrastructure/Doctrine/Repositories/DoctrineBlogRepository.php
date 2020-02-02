@@ -38,6 +38,11 @@ class DoctrineBlogRepository extends DoctrineReadRepository implements BlogRepos
             $queryBuilder->setParameter('searchTerm', "%{$term}%");
         }
 
+        $status = true;
+
+        $queryBuilder->andWhere($queryBuilder->expr()->eq('status', ':status'));
+        $queryBuilder->setParameter('status', $status);
+
         // TODO: Encapsulate this funcionality in a builder of query SORT
         foreach ($sorting->getRaw() as $sortBy => $sortSense) {
             $queryBuilder->addOrderBy("$itemAlias.$sortBy", $sortSense);

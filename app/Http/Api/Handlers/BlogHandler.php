@@ -5,6 +5,7 @@ namespace App\Http\Api\Handlers;
 use App\Http\Api\Requests\Blogs\BlogCreateRequest;
 use App\Http\Api\Requests\Blogs\BlogListRequest;
 use App\Http\Api\Requests\Blogs\BlogShowRequest;
+use App\Http\Api\Requests\Blogs\BlogStatusChangeRequest;
 use App\Http\Api\Requests\Blogs\BlogUpdateRequest;
 use App\Http\Responders\MetadataResponder as Responder;
 use App\Http\Transformers\Blogs\BlogTransformer;
@@ -55,6 +56,15 @@ class BlogHandler extends Handler
         $request->validate();
 
         $blog = $this->service->show($request);
+
+        return $this->responder->success($blog, new BlogTransformer())->respond();
+    }
+
+    public function statusChange(BlogStatusChangeRequest $request)
+    {
+        $request->validate();
+
+        $blog = $this->service->statusChange($request);
 
         return $this->responder->success($blog, new BlogTransformer())->respond();
     }

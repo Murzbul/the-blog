@@ -4,7 +4,6 @@ namespace App\Http\Api\Requests\Blogs;
 
 use Blog\Payloads\Blogs\BlogCreatePayload;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class BlogCreateRequest implements BlogCreatePayload
 {
@@ -16,10 +15,6 @@ class BlogCreateRequest implements BlogCreatePayload
 
     public function __construct(Request $request)
     {
-        if (! Gate::allows('isAdmin')) {
-            abort(403, 'Error');
-        }
-
         $this->request = $request;
     }
 
