@@ -12,6 +12,7 @@ use Blog\Payloads\Blogs\BlogShowPayload;
 use Blog\Payloads\Blogs\BlogStatusChangePayload;
 use Blog\Payloads\Blogs\BlogUpdatePayload;
 use Blog\Repositories\BlogRepository;
+use Blog\Repositories\LikeRepository;
 use Blog\Repositories\PersistRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Lib\Criteria\Contracts\Criteria;
@@ -22,11 +23,17 @@ class BlogService
     private $persistRepository;
     /** @var BlogRepository */
     private $repository;
+    /** @var LikeRepository */
+    private $likeRepository;
 
-    public function __construct(PersistRepository $persistRepository, BlogRepository $repository)
+    public function __construct(PersistRepository $persistRepository,
+                                BlogRepository $repository,
+                                LikeRepository $likeRepository
+    )
     {
         $this->persistRepository = $persistRepository;
         $this->repository = $repository;
+        $this->likeRepository = $likeRepository;
     }
 
     public function create(BlogCreatePayload $payload): Blog
@@ -103,13 +110,25 @@ class BlogService
             $blog = $payload->blog();
             $user = $payload->user();
 
-            $like = new Like($user);
+            $userLike = $this->likeRepository->findOneBy(['user' => $user->getId()]);
 
-            $this->persistRepository->save($like);
+            $likeExist = $blog->getLikes()->filter(function($like) use ($userLike) {
+                /** @var Like $like */
+                return $userLike->getId() === $like->getId();
+            })->first();
 
-            $blog->setLike($like);
+            if (!$likeExist) {
+                $like = new Like($user);
 
-            $this->persistRepository->save($blog);
+                $this->persistRepository->save($like);
+
+                $blog->setLike($like);
+
+                $this->persistRepository->save($blog);
+            } else {
+                $like = $userLike;
+                $this->persistRepository->remove($userLike);
+            }
 
             return $like;
         });

@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Infrastructure\Doctrine\Repositories\DoctrineBlogRepository;
+use App\Infrastructure\Doctrine\Repositories\DoctrineLikeRepository;
 use App\Infrastructure\Doctrine\Repositories\DoctrinePersistRepository;
 use App\Infrastructure\Doctrine\Repositories\DoctrineReadRepository;
 use App\Infrastructure\Doctrine\Repositories\DoctrineRoleRepository;
 use App\Infrastructure\Doctrine\Repositories\DoctrineUserRepository;
 use Blog\Repositories\BlogRepository;
+use Blog\Repositories\LikeRepository;
 use Blog\Repositories\PersistRepository;
 use Blog\Repositories\ReadRepository;
 use Blog\Repositories\RoleRepository;
@@ -33,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         BlogRepository::class => DoctrineBlogRepository::class,
         UserRepository::class => DoctrineUserRepository::class,
         RoleRepository::class => DoctrineRoleRepository::class,
+        LikeRepository::class => DoctrineLikeRepository::class,
     ];
 
     /**
