@@ -6,17 +6,62 @@
 	},
 	"item": [
 		{
-			"name": "Blog",
+			"name": "Auth",
 			"item": [
 				{
-					"name": "Create Blog",
+					"name": "Login",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
 								"exec": [
-									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"JWT\", jsonData.data.token);",
+									"pm.globals.set(\"USER_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"admin@blog.com\",\n\t\"password\": \"123456\"\n}\n"
+						},
+						"url": {
+							"raw": "{{URL}}/api/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"",
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
@@ -37,7 +82,167 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Blog 1\"\n}\n"
+							"raw": "{\n\t\"email\": \"user@blog.com\",\n\t\"name\": \"User\",\n\t\"password\": \"123456\",\n\t\"password_confirmation\": \"123456\"\n}\n"
+						},
+						"url": {
+							"raw": "{{URL}}/api/signup",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"BLOG_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"BLOG_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Blog",
+			"item": [
+				{
+					"name": "Create Blog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"BLOG_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Title 1\",\n\t\"body\": \"Body 1\"\n}\n"
 						},
 						"url": {
 							"raw": "{{URL}}/api/blogs",
@@ -82,7 +287,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Blogs 2 Update\"\n}\n"
+							"raw": "{\n\t\"title\": \"Title 2\",\n\t\"body\": \"Body 2\"\n}\n"
 						},
 						"url": {
 							"raw": "{{URL}}/api/blogs/{{BLOG_ID}}",
@@ -127,7 +332,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{URL}}/api/blogs?search=",
+							"raw": "{{URL}}/api/blogs?limit=5&search=",
 							"host": [
 								"{{URL}}"
 							],
@@ -136,6 +341,10 @@
 								"blogs"
 							],
 							"query": [
+								{
+									"key": "limit",
+									"value": "5"
+								},
 								{
 									"key": "search",
 									"value": ""
@@ -179,6 +388,174 @@
 								"api",
 								"blogs",
 								"{{BLOG_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"BLOG_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"message\": \"First Comment\",\n\t\"userId\": \"{{USER_ID}}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{URL}}/api/blogs/{{BLOG_ID}}/comment",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								"{{BLOG_ID}}",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Status Change",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"BLOG_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\": false\n}\n"
+						},
+						"url": {
+							"raw": "{{URL}}/api/blogs/{{BLOG_ID}}/change",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								"{{BLOG_ID}}",
+								"change"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create like",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "98e847b3-c7b2-46d9-b8d3-b7ac214a5a2c",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"BLOG_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\": \"{{USER_ID}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{URL}}/api/blogs/{{BLOG_ID}}/like",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								"{{BLOG_ID}}",
+								"like"
 							]
 						}
 					},

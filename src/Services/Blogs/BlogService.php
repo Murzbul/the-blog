@@ -29,8 +29,7 @@ class BlogService
     public function __construct(PersistRepository $persistRepository,
                                 BlogRepository $repository,
                                 LikeRepository $likeRepository
-    )
-    {
+    ) {
         $this->persistRepository = $persistRepository;
         $this->repository = $repository;
         $this->likeRepository = $likeRepository;
@@ -112,12 +111,12 @@ class BlogService
 
             $userLike = $this->likeRepository->findOneBy(['user' => $user->getId()]);
 
-            $likeExist = $blog->getLikes()->filter(function($like) use ($userLike) {
-                /** @var Like $like */
+            $likeExist = $blog->getLikes()->filter(function ($like) use ($userLike) {
+                /* @var Like $like */
                 return $userLike->getId() === $like->getId();
             })->first();
 
-            if (!$likeExist) {
+            if (! $likeExist) {
                 $like = new Like($user);
 
                 $this->persistRepository->save($like);

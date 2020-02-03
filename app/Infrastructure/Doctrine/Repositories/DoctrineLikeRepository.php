@@ -11,5 +11,4 @@ class DoctrineLikeRepository extends DoctrineReadRepository implements LikeRepos
     {
         return Like::class;
     }
-
 }
