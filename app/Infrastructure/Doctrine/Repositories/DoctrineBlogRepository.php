@@ -21,9 +21,9 @@ class DoctrineBlogRepository extends DoctrineReadRepository implements BlogRepos
         $filter = $criteria->getFilter();
         $sorting = $criteria->getSorting();
 
-        $itemAlias = 'blog';
+        $blogAlias = 'blog';
 
-        $queryBuilder = $this->createQueryBuilder($itemAlias);
+        $queryBuilder = $this->createQueryBuilder($blogAlias);
 
         // TODO: Encapsulate this funcionality in a builder of query SEARCH
         if ($filter->has(BlogFilter::SEARCH) && ! empty($filter->get(BlogFilter::SEARCH))) {
@@ -31,7 +31,7 @@ class DoctrineBlogRepository extends DoctrineReadRepository implements BlogRepos
             $term = str_replace(' ', '%', $filter->get(BlogFilter::SEARCH));
 
             foreach ($filter->getFields() as $fieldSearch) {
-                $search[] = "LOWER({$itemAlias}.{$fieldSearch}) LIKE LOWER(:searchTerm)";
+                $search[] = "LOWER({$blogAlias}.{$fieldSearch}) LIKE LOWER(:searchTerm)";
             }
 
             $queryBuilder->andWhere($queryBuilder->expr()->orX(...$search));
@@ -40,12 +40,12 @@ class DoctrineBlogRepository extends DoctrineReadRepository implements BlogRepos
 
         $status = true;
 
-        $queryBuilder->andWhere($queryBuilder->expr()->eq('status', ':status'));
+        $queryBuilder->andWhere($queryBuilder->expr()->eq("$blogAlias.status", ':status'));
         $queryBuilder->setParameter('status', $status);
 
         // TODO: Encapsulate this funcionality in a builder of query SORT
         foreach ($sorting->getRaw() as $sortBy => $sortSense) {
-            $queryBuilder->addOrderBy("$itemAlias.$sortBy", $sortSense);
+            $queryBuilder->addOrderBy("$blogAlias.$sortBy", $sortSense);
         }
 
         return new Paginator($queryBuilder);

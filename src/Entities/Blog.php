@@ -4,6 +4,7 @@ namespace Blog\Entities;
 
 use Blog\Contracts\Timestampable as ITimestapable;
 use Blog\Payloads\Blogs\BlogUpdatePayload;
+use Doctrine\Common\Collections\ArrayCollection;
 use Lib\Traits\Timestampable;
 use Ramsey\Uuid\Uuid;
 
@@ -19,12 +20,15 @@ class Blog implements ITimestapable
     private $body;
     /** @var string */
     private $status;
+    /** @var Comment[]|ArrayCollection */
+    private $comments;
 
     public function __construct(string $title, string $body)
     {
         $this->id = Uuid::uuid4();
         $this->title = $title;
         $this->body = $body;
+        $this->comments = new ArrayCollection();
         $this->status = true;
     }
 
@@ -43,14 +47,29 @@ class Blog implements ITimestapable
         return $this->body;
     }
 
-    public function update(BlogUpdatePayload $payload)
+    public function getStatus(): string
     {
-        $this->title = $payload->title();
-        $this->body = $payload->body();
+        return $this->status;
+    }
+
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    public function setComment(Comment $commment): void
+    {
+        $this->comments->add($commment);
     }
 
     public function changeStatus(bool $status)
     {
         $this->status = $status;
+    }
+
+    public function update(BlogUpdatePayload $payload)
+    {
+        $this->title = $payload->title();
+        $this->body = $payload->body();
     }
 }

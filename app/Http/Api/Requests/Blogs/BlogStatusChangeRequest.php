@@ -12,6 +12,7 @@ use Lib\Validators\UuidValidator;
 class BlogStatusChangeRequest implements BlogStatusChangePayload
 {
     const ID = 'blogId';
+    const STATUS = 'status';
 
     /** @var Request */
     private $request;
@@ -39,6 +40,11 @@ class BlogStatusChangeRequest implements BlogStatusChangePayload
     public function id(): string
     {
         return $this->id;
+    }
+
+    public function status(): bool
+    {
+        return $this->request->get(self::STATUS);
     }
 
     public function blog(): Blog

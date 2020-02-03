@@ -36,6 +36,7 @@ return [
                 App\Infrastructure\Doctrine\Mappings\BlogMapping::class,
                 App\Infrastructure\Doctrine\Mappings\UserMapping::class,
                 App\Infrastructure\Doctrine\Mappings\RoleMapping::class,
+                App\Infrastructure\Doctrine\Mappings\CommentMapping::class,
             ],
             /*
             |--------------------------------------------------------------------------

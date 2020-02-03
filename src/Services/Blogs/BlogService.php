@@ -3,6 +3,8 @@
 namespace Blog\Services\Blogs;
 
 use Blog\Entities\Blog;
+use Blog\Entities\Comment;
+use Blog\Payloads\Blogs\BlogCommentCreatePayload;
 use Blog\Payloads\Blogs\BlogCreatePayload;
 use Blog\Payloads\Blogs\BlogShowPayload;
 use Blog\Payloads\Blogs\BlogStatusChangePayload;
@@ -63,11 +65,33 @@ class BlogService
     public function statusChange(BlogStatusChangePayload $payload): Blog
     {
         $blog = $payload->blog();
+        $status = $payload->status();
 
-        $blog->changeStatus(false);
+        $blog->changeStatus($status);
 
         $this->persistRepository->save($blog);
 
         return $blog;
+    }
+
+    public function comment(BlogCommentCreatePayload $payload): Comment
+    {
+        $comment = $this->persistRepository->transactional(function () use ($payload) {
+            $blog = $payload->blog();
+            $message = $payload->message();
+            $user = $payload->user();
+
+            $comment = new Comment($message, $user);
+
+            $this->persistRepository->save($comment);
+
+            $blog->setComment($comment);
+
+            $this->persistRepository->save($blog);
+
+            return $comment;
+        });
+
+        return $comment;
     }
 }

@@ -10,6 +10,7 @@ class BlogTransformer extends Transformer
 {
     protected $load = [
         'dateTime' => TimestampableTransformer::class,
+        'comments' => CommentTransformer::class,
     ];
 
     public function transform(Blog $blog)
@@ -18,11 +19,17 @@ class BlogTransformer extends Transformer
             'id' => $blog->getId(),
             'title' => $blog->getTitle(),
             'body' => $blog->getBody(),
+            'status' => $blog->getStatus(),
         ]);
     }
 
     public function includeDateTime(Blog $blog)
     {
         return $blog;
+    }
+
+    public function includeComments(Blog $blog)
+    {
+        return $blog->getComments()->getValues();
     }
 }

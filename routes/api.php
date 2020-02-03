@@ -25,8 +25,9 @@ Route::get('/blogs/{blogId}', 'BlogHandler@show')->name('BlogHandler@show');
 
 Route::middleware(\App\Http\Kernel::API)->group(function(){
     Route::post('/blogs', 'BlogHandler@create')->name('BlogHandler@create');
-    Route::post('/blogs/change/{blogId}', 'BlogHandler@statusChange')->name('BlogHandler@statusChange');
+    Route::post('/blogs/{blogId}/change', 'BlogHandler@statusChange')->name('BlogHandler@statusChange');
     Route::put('/blogs/{blogId}', 'BlogHandler@update')->name('BlogHandler@update');
+    Route::post('/blogs/{blogId}/comment', 'BlogHandler@comment')->name('BlogHandler@comment');
 
     Route::post('/roles', 'RoleHandler@create')->name('RoleHandler@create');
     Route::put('/roles/{roleId}', 'RoleHandler@update')->name('RoleHandler@update');
