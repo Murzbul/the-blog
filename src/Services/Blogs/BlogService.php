@@ -4,8 +4,10 @@ namespace Blog\Services\Blogs;
 
 use Blog\Entities\Blog;
 use Blog\Entities\Comment;
+use Blog\Entities\Like;
 use Blog\Payloads\Blogs\BlogCommentCreatePayload;
 use Blog\Payloads\Blogs\BlogCreatePayload;
+use Blog\Payloads\Blogs\BlogLikeCreatePayload;
 use Blog\Payloads\Blogs\BlogShowPayload;
 use Blog\Payloads\Blogs\BlogStatusChangePayload;
 use Blog\Payloads\Blogs\BlogUpdatePayload;
@@ -93,5 +95,25 @@ class BlogService
         });
 
         return $comment;
+    }
+
+    public function like(BlogLikeCreatePayload $payload): Like
+    {
+        $like = $this->persistRepository->transactional(function () use ($payload) {
+            $blog = $payload->blog();
+            $user = $payload->user();
+
+            $like = new Like($user);
+
+            $this->persistRepository->save($like);
+
+            $blog->setLike($like);
+
+            $this->persistRepository->save($blog);
+
+            return $like;
+        });
+
+        return $like;
     }
 }

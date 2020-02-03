@@ -22,6 +22,8 @@ class Blog implements ITimestapable
     private $status;
     /** @var Comment[]|ArrayCollection */
     private $comments;
+    /** @var ArrayCollection */
+    private $likes;
 
     public function __construct(string $title, string $body)
     {
@@ -29,6 +31,7 @@ class Blog implements ITimestapable
         $this->title = $title;
         $this->body = $body;
         $this->comments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
         $this->status = true;
     }
 
@@ -60,6 +63,16 @@ class Blog implements ITimestapable
     public function setComment(Comment $commment): void
     {
         $this->comments->add($commment);
+    }
+
+    public function setLike(Like $like): void
+    {
+        $this->likes->add($like);
+    }
+
+    public function getLikes()
+    {
+        return $this->likes;
     }
 
     public function changeStatus(bool $status)

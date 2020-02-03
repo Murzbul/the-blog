@@ -4,6 +4,7 @@ namespace App\Infrastructure\Doctrine\Mappings;
 
 use Blog\Entities\Blog;
 use Blog\Entities\Comment;
+use Blog\Entities\Like;
 use LaravelDoctrine\Fluent\EntityMapping;
 use LaravelDoctrine\Fluent\Fluent;
 use Lib\Doctrine\Types\UuidType;
@@ -27,6 +28,12 @@ class BlogMapping extends EntityMapping
             ->joinTable('blog_has_comments')
             ->addJoinColumn(null, 'default_blog_id', 'id', false, false, 'CASCADE')
             ->addInverseJoinColumn('default_comment_id', 'id', false, false, 'CASCADE');
+
+        $builder
+            ->belongsToMany(Like::class, 'likes')
+            ->joinTable('blog_has_likes')
+            ->addJoinColumn(null, 'default_blog_id', 'id', false, false, 'CASCADE')
+            ->addInverseJoinColumn('default_like_id', 'id', false, false, 'CASCADE');
 
         $builder->timestamps('createdAt', 'updatedAt', 'carbonDateTime');
     }

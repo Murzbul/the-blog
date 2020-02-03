@@ -20,6 +20,7 @@ class BlogTransformer extends Transformer
             'title' => $blog->getTitle(),
             'body' => $blog->getBody(),
             'status' => $blog->getStatus(),
+            'likes' => $blog->getLikes()->count(),
         ]);
     }
 
