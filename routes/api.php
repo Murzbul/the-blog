@@ -29,6 +29,7 @@ Route::middleware(\App\Http\Kernel::API)->group(function(){
     Route::put('/blogs/{blogId}', 'BlogHandler@update')->name('BlogHandler@update');
     Route::post('/blogs/{blogId}/comment', 'BlogHandler@comment')->name('BlogHandler@comment');
     Route::post('/blogs/{blogId}/like', 'BlogHandler@like')->name('BlogHandler@like');
+    Route::post('/files/upload', 'FileHandler@upload')->name('FileHandler@upload');
 
     Route::post('/roles', 'RoleHandler@create')->name('RoleHandler@create');
     Route::put('/roles/{roleId}', 'RoleHandler@update')->name('RoleHandler@update');

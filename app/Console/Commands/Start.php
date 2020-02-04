@@ -30,6 +30,10 @@ class Start extends Command
         Artisan::call('blog:role:create Admin');
         $this->info(Artisan::output());
 
+        $this->warn('Create Admin Role');
+        Artisan::call('blog:role:create Editor');
+        $this->info(Artisan::output());
+
         $this->warn('Create Admin User');
         Artisan::call('blog:user:create admin@blog.com --password=123456 --name=admin');
         $this->info(Artisan::output());
